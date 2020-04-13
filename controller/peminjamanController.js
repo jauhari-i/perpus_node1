@@ -1,7 +1,10 @@
 const controller = {};
 
-const tambahPeminjaman = require("../service/peminjaman/tambahPeminjaman");
-const cek = require("../service/peminjaman/cekPeminjaman");
+const tambahPeminjaman = require('../service/peminjaman/tambahPeminjaman');
+const cek = require('../service/peminjaman/cekPeminjaman');
+const semuaPeminjaman = require('../service/peminjaman/semuaPeminjaman');
+const editPeminjaman = require('../service/peminjaman/editPeminjaman');
+const deletePeminjaman = require('../service/peminjaman/deletePeminjaman');
 
 controller.tambahPeminjaman = (req, res) => {
   req.getConnection((err, conn) => {
@@ -27,6 +30,57 @@ controller.cekPinjam = (req, res) => {
     } else {
       let id = req.params.kode;
       cek(conn, id, (err, result) => {
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(result);
+        }
+      });
+    }
+  });
+};
+
+controller.semuaPeminjaman = (req, res) => {
+  req.getConnection((err, conn) => {
+    if (err) {
+      res.send(err);
+    } else {
+      semuaPeminjaman(conn, (err, result) => {
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(result);
+        }
+      });
+    }
+  });
+};
+
+controller.editPeminjaman = (req, res) => {
+  req.getConnection((err, conn) => {
+    if (err) {
+      res.send(err);
+    } else {
+      let id = req.params.kode;
+      let status = req.params.status;
+      editPeminjaman(conn, id, status, (err, result) => {
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(result);
+        }
+      });
+    }
+  });
+};
+
+controller.deletePeminjaman = (req, res) => {
+  req.getConnection((err, conn) => {
+    if (err) {
+      res.send(err);
+    } else {
+      let id = req.params.kode;
+      deletePeminjaman(conn, id, (err, result) => {
         if (err) {
           res.json(err);
         } else {
